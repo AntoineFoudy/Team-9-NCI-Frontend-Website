@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+
+
+<body>
+
+  <div class="box">
+    <h2>Dashboard</h2>
+
+    <div class="details">
+      <p><strong>User ID:</strong> <span id="userIdDisplay">Not logged in</span></p>
+      <p><strong>Status:</strong> Logged in</p>
+    </div>
+
+    <h3>Features</h3>
+
+    <div class="buttons-column">
+      <button onclick="goToCreateEvent()">Create Event</button>
+      <button onclick="goToViewEvents()">View Events</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    showUserDetails();
+  </script>
+</body>
+</html>

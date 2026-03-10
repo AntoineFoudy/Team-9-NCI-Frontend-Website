@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Event</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<div class="navbar">
+  <button onclick="toggleMenu()">☰ Menu</button>
+
+
+
+<body>
+
+  <div class="box">
+    <h2>Create Event</h2>
+
+    <label for="description">Description</label>
+    <input id="description" type="text" placeholder="Describe event" />
+
+    <label for="dateTime">Date & Time</label>
+    <input id="dateTime" type="datetime-local" />
+
+    <label for="latitude">Latitude</label>
+    <input id="latitude" type="text" placeholder="e.g. 53.3498" />
+
+    <label for="longitude">Longitude</label>
+    <input id="longitude" type="text" placeholder="e.g. -6.2603" />
+
+    <div class="buttons">
+      <button onclick="addEvent()">Add Event</button>
+      <button onclick="goToDashboard()">Back</button>
+    </div>
+
+    <p id="eventMessage"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

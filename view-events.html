@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>View Events</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="box">
+    <h2>View Events</h2>
+
+    <div class="buttons">
+      <button onclick="getEvents()">Display Your Events</button>
+      <button onclick="viewCalendar()">View Calendar</button>
+      <button onclick="goToDashboard()">Back</button>
+    </div>
+
+    <div id="events"></div>
+
+    <div id="calendar"></div>
+
+    <div id="selected-date-events"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
