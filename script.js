@@ -2,6 +2,15 @@
 
 const API_URL = "http://108.131.153.250:8080";
 
+// declaring variable submit
+let submit;
+
+// Defining a value for submit only if the login page is open
+if(document.getElementById("submit")) {
+  submit = document.getElementById("submit");
+  submit.addEventListener("click", login);
+};
+
 
 /* =========================================
    LOGIN
@@ -14,6 +23,7 @@ async function login() {
   const password = document.getElementById("password").value;
   const errorEl = document.getElementById("error");
 
+
   // Clear previous error message before trying again
   if (errorEl) {
     errorEl.innerText = "";
@@ -22,14 +32,15 @@ async function login() {
   try {
     // Send login request to backend
     const response = await fetch(
-      `${API_URL}/login?loginEmail=${encodeURIComponent(email)}&loginPassword=${encodeURIComponent(password)}`
+      `${API_URL}/login?loginEmail=${encodeURIComponent(email)}&loginPassword=${encodeURIComponent(password)}`,
+      {method: "GET"}
     );
 
     const data = await response.json();
-    console.log(data);
+   //  console.log(data);
 
-    // Fallback to 1 if backend does not return a userId
-    const userId = data.userId || 1;
+    // Assign userID
+    const userId = data.userID;
 
     // Store logged-in user details locally
     localStorage.setItem("userId", userId);
@@ -96,11 +107,14 @@ function logout() {
 ========================================= */
 async function addEvent() {
   const description = document.getElementById("description")?.value || "";
-  const dateTime = document.getElementById("dateTime").value;
+  let dateTime = document.getElementById("dateTime").value;
   const latitude = document.getElementById("latitude").value;
   const longitude = document.getElementById("longitude").value;
   const userId = localStorage.getItem("userId");
   const messageEl = document.getElementById("eventMessage");
+
+  const date = new Date(dateTime);
+  dateTime = date.toISOString();
 
   // Clear previous message before validating/submitting
   if (messageEl) {
