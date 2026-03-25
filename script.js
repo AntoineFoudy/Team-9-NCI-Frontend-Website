@@ -1,5 +1,7 @@
 // API BASE URL
 
+
+
 const API_URL = "http://108.131.153.250:8080";
 
 // declaring variable submit
@@ -103,8 +105,7 @@ function logout() {
 async function addEvent() {
   const description = document.getElementById("description")?.value || "";
   let dateTime = document.getElementById("dateTime").value;
-  const formatAddress = place.formattedAddress;
-  const encodeAddress = encodeURIComponent(formatAddress).replace(/%20/g, '+');
+  const address = window.selectedAddress;
   const userId = localStorage.getItem("userId");
   const messageEl = document.getElementById("eventMessage");
 
@@ -114,7 +115,7 @@ async function addEvent() {
   }
 
   // Validate  
-  if (!dateTime || !location) {
+  if (!dateTime || !address) {
     if (messageEl) {
       messageEl.innerText = "Please fill in all fields.";
     }
@@ -135,7 +136,7 @@ async function addEvent() {
         userId: parseInt(userId),
         description: description,
         dateTime: dateTime,
-        location: location
+        address: address
       })
     });
 
