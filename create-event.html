@@ -2,17 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Create Event</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Maps Extended Components -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.11/index.min.js"></script>
 </head>
 
-<div class="navbar">
-  
-
-
-
 <body>
+
+ 
+  <gmpx-api-loader 
+    key="AIzaSyA7y6tiN4jCAqErJwRX9snh79AATgU7e8k"
+    solution-channel="GMP_GE_mapsandplacesautocomplete_v2">
+  </gmpx-api-loader>
 
   <div class="box">
     <h2>Create Event</h2>
@@ -23,11 +27,18 @@
     <label for="dateTime">Date & Time</label>
     <input id="dateTime" type="datetime-local" />
 
-    <label for="latitude">Latitude</label>
-    <input id="latitude" type="text" placeholder="e.g. 53.3498" />
+    <!-- Location Picker -->
+    <label>Choose Location</label>
 
-    <label for="longitude">Longitude</label>
-    <input id="longitude" type="text" placeholder="e.g. -6.2603" />
+    <div style="margin-top:10px;">
+      <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
+    </div>
+
+    <div style="margin-top:10px; height:250px;">
+      <gmp-map center="53.3498,-6.2603" zoom="12" map-id="DEMO_MAP_ID">
+        <gmp-advanced-marker></gmp-advanced-marker>
+      </gmp-map>
+    </div>
 
     <div class="buttons">
       <button onclick="addEvent()">Add Event</button>
@@ -38,6 +49,56 @@
   </div>
 
   <script src="script.js"></script>
-</body>
 
+  <!-- Map Logic -->
+  <script>
+    async function initMapPicker() {
+      await customElements.whenDefined('gmp-map');
+
+      const map = document.querySelector('gmp-map');
+      const marker = document.querySelector('gmp-advanced-marker');
+      const placePicker = document.querySelector('gmpx-place-picker');
+      const infowindow = new google.maps.InfoWindow();
+
+      map.innerMap.setOptions({
+        mapTypeControl: false
+      });
+
+      placePicker.addEventListener('gmpx-placechange', () => {
+        const place = placePicker.value;
+
+        if (!place.location) {
+          alert("No details available for this location");
+          marker.position = null;
+          return;
+        }
+
+        // Store selected address globally for addEvent()
+        window.selectedLocation = place.formattedAddress;
+
+        // Move map
+        if (place.viewport) {
+          map.innerMap.fitBounds(place.viewport);
+        } else {
+          map.center = place.location;
+          map.zoom = 17;
+        }
+
+        // Move marker
+        marker.position = place.location;
+
+        // Show info popup
+        infowindow.setContent(`
+          <strong>${place.displayName}</strong><br>
+          <span>${place.formattedAddress}</span>
+        `);
+
+        infowindow.open(map.innerMap, marker);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initMapPicker);
+  </script>
+
+</body>
 </html>

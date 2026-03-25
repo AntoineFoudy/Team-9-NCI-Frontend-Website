@@ -73,8 +73,6 @@ function showUserDetails() {
 
 /* =========================================
    NAVIGATION FUNCTIONS
-   buttons to move between
-   pages in the frontend.
 ========================================= */
 function goToDashboard() {
   window.location.href = "dashboard.html";
@@ -99,38 +97,34 @@ function logout() {
   window.location.href = "login.html";
 }
 
-/* =========================================
-   CREATE EVENT
-   Sends a POST request to /schedule with the
-   event details entered by the user.
-   The backend stores the event for that user.
-========================================= */
+  // CREATE EVENT 
+ //  Sends a new event to the backend using 
+
 async function addEvent() {
   const description = document.getElementById("description")?.value || "";
   let dateTime = document.getElementById("dateTime").value;
-  const latitude = document.getElementById("latitude").value;
-  const longitude = document.getElementById("longitude").value;
+  const location = window.selectedLocation;
   const userId = localStorage.getItem("userId");
   const messageEl = document.getElementById("eventMessage");
 
-  const date = new Date(dateTime);
-  dateTime = date.toISOString();
-
-  // Clear previous message before validating/submitting
+  // Clear previous message
   if (messageEl) {
     messageEl.innerText = "";
   }
 
-  //  validation so empty feields are not submitted
-  if (!dateTime || !latitude || !longitude) {
+  // Validate  
+  if (!dateTime || !location) {
     if (messageEl) {
       messageEl.innerText = "Please fill in all fields.";
     }
     return;
   }
 
+  // Convert date/time format for backend 
+  dateTime = new Date(dateTime).toISOString();
+
   try {
-    // POST request to create a new event
+    // Send event data to backend
     await fetch(`${API_URL}/schedule`, {
       method: "POST",
       headers: {
@@ -140,64 +134,60 @@ async function addEvent() {
         userId: parseInt(userId),
         description: description,
         dateTime: dateTime,
-        latitude: parseFloat(latitude),
-        longitude: parseFloat(longitude)
+        location: location
       })
     });
 
-    //  message shown if successful
+    // Show success message
     if (messageEl) {
       messageEl.innerText = "Event added";
     }
   } catch (error) {
     console.error(error);
 
-    // Error message shown in UI if fails
+    // Show error message
     if (messageEl) {
       messageEl.innerText = "Failed to add event";
     }
   }
 }
 
-/* =========================================
-   GET EVENTS
-   Fetches all events for the current user and
-   displays them in the #events container.
-========================================= */
+
+  // GET EVENTS 
+  // Fetches all events for the current user 
+
 async function getEvents() {
   const userId = localStorage.getItem("userId");
   const container = document.getElementById("events");
   const calendar = document.getElementById("calendar");
   const selectedDateEvents = document.getElementById("selected-date-events");
 
-  // Stop function if the events container is missing
   if (!container) return;
 
-  // Clear other sections so only the event list is visible
+  // Clear other sections before showing event list
   container.innerHTML = "";
   if (calendar) calendar.innerHTML = "";
   if (selectedDateEvents) selectedDateEvents.innerHTML = "";
 
   try {
-    // GET request to fetch this user's events
+    // Fetch events from backend
     const response = await fetch(`${API_URL}/schedule?userId=${userId}`);
     const events = await response.json();
 
-    // Show message if no events are returned
+    // If no events exist
     if (!events.length) {
       container.innerHTML = "<p>No events found.</p>";
       return;
     }
 
-    // Create and display a card for each event
+    // Render each event as a card
     events.forEach(event => {
       const div = document.createElement("div");
       div.className = "event";
 
       div.innerHTML = `
         <p><b>Date:</b> ${event.dateTime}</p>
-        <p><b>Latitude:</b> ${event.latitude}</p>
-        <p><b>Longitude:</b> ${event.longitude}</p>
+        <p><b>location:</b> ${event.location || "Not available"}</p>
       `;
 
       container.appendChild(div);
@@ -208,15 +198,12 @@ async function getEvents() {
   }
 }
 
+
 /* =========================================
    VIEW CALENDAR
    shows monthly calendar for the current
    month and highlights on days
    that have events.
-
-   When a calendar day is clicked, the events
-   for that date are shown in a panel below
-   the calendar .
 ========================================= */
 async function viewCalendar() {
   const userId = localStorage.getItem("userId");
@@ -226,7 +213,7 @@ async function viewCalendar() {
   const eventsContainer = document.getElementById("events");
   const selectedDateEvents = document.getElementById("selected-date-events");
 
-  // Clear previous event list, calendar, and selected-day panel
+  // Clear previous event list
   calendar.innerHTML = "";
   if (eventsContainer) eventsContainer.innerHTML = "";
   if (selectedDateEvents) selectedDateEvents.innerHTML = "";
@@ -240,7 +227,7 @@ async function viewCalendar() {
     const year = today.getFullYear();
     const month = today.getMonth();
 
-    // Arrays lists used for readable month/day labels in the UI
+    // Arrays lists 
     const monthNames = [
       "January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
@@ -257,7 +244,6 @@ async function viewCalendar() {
     // Build the main calendar structure:
     // 1. Month title
     // 2. Weekday labels
-    // 3. Empty grid that day cells will be added into
     calendar.innerHTML = `
       <div class="calendar-title">${monthNames[month]} ${year}</div>
       <div class="calendar-weekdays">
@@ -305,19 +291,18 @@ async function viewCalendar() {
       cell.onclick = () => {
         selectedDateEvents.innerHTML = `
           <div class="selected-events-box">
-            <h3>Events on ${monthNames[month]} ${day}</h3>
-            ${
-              dayEvents.length
-                ? dayEvents.map(e => `
-                    <div class="selected-event-item">
-                      <p><strong>Time:</strong> ${new Date(e.dateTime).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                      })}</p>
-                      <p><strong>Latitude:</strong> ${e.latitude}</p>
-                      <p><strong>Longitude:</strong> ${e.longitude}</p>
-                    </div>
-                  `).join("")
+          <h3>Events on ${monthNames[month]} ${day}</h3>
+           ${
+            dayEvents.length
+            ? dayEvents.map(e => `
+              <div class="selected-event-item">
+              <p><strong>Time:</strong> ${new Date(e.dateTime).toLocaleTimeString([], {
+                  hour: "2-digit",
+                   minute: "2-digit"
+               })}</p>
+               <p><strong>Location:</strong> ${e.location || "Not available"}</p>
+              </div>
+              `).join("")
                 : "<p>No events for this day.</p>"
             }
           </div>
