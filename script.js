@@ -103,7 +103,8 @@ function logout() {
 async function addEvent() {
   const description = document.getElementById("description")?.value || "";
   let dateTime = document.getElementById("dateTime").value;
-  const location = window.selectedLocation;
+  const formatAddress = place.formattedAddress;
+  const encodeAddress = encodeURIComponent(formatAddress).replace(/%20/g, '+');
   const userId = localStorage.getItem("userId");
   const messageEl = document.getElementById("eventMessage");
 
@@ -187,7 +188,7 @@ async function getEvents() {
 
       div.innerHTML = `
         <p><b>Date:</b> ${event.dateTime}</p>
-        <p><b>location:</b> ${event.location || "Not available"}</p>
+        <p><b>address:</b> ${event.address || "Not available"}</p>
 
         <iframe
         width="100%"
@@ -308,7 +309,7 @@ async function viewCalendar() {
                   hour: "2-digit",
                    minute: "2-digit"
                })}</p>
-               <p><strong>Location:</strong> ${e.location || "Not available"}</p>
+               <p><strong>address:</strong> ${e.address || "Not available"}</p>
               </div>
               `).join("")
                 : "<p>No events for this day.</p>"
