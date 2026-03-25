@@ -188,6 +188,14 @@ async function getEvents() {
       div.innerHTML = `
         <p><b>Date:</b> ${event.dateTime}</p>
         <p><b>location:</b> ${event.location || "Not available"}</p>
+
+        <iframe
+        width="100%"
+       height="200"
+       style="border:0; margin-top:10px;"
+       loading="lazy"
+       src="https://www.google.com/maps?q=${encodeURIComponent(event.location)}&output=embed">
+       </iframe>
       `;
 
       container.appendChild(div);
