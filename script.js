@@ -65,7 +65,9 @@ async function login() {
   }
 }
 
+// Get User's Coordinates
 async function getUserLocation() {
+  const userId = localStorage.getItem("userId");
   try {
     // Send login request to backend
     const response = await fetch(
@@ -82,6 +84,19 @@ async function getUserLocation() {
     const lng = data.location.lng;
 
     console.log(lat, lng);
+    
+    // Post User's Coordinates to the backed to be updated in the database
+    await fetch(`${API_URL}/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userId: parseInt(userId),
+        lastLatitude: lat,
+        lastLongitude: lng
+      })
+    });
   } 
   catch (error) {
     console.error(error);
