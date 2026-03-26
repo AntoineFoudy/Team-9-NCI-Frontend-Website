@@ -3,6 +3,8 @@
 
 
 const API_URL = "http://108.131.153.250:8080";
+const API_LOCATION_URL = "https://www.googleapis.com/geolocation/v1/geolocate?";
+const LOCATION_KEY = "AIzaSyA7y6tiN4jCAqErJwRX9snh79AATgU7e8k";
 
 // declaring variable submit
 let submit;
@@ -48,6 +50,9 @@ async function login() {
     localStorage.setItem("userId", userId);
     localStorage.setItem("userEmail", email);
 
+    // Call Get User's Location function
+    await getUserLocation();
+
     // Redirect user to dashboard after login
     window.location.href = "dashboard.html";
   } catch (error) {
@@ -57,6 +62,29 @@ async function login() {
     if (errorEl) {
       errorEl.innerText = "Login failed";
     }
+  }
+}
+
+async function getUserLocation() {
+  try {
+    // Send login request to backend
+    const response = await fetch(
+      `${API_LOCATION_URL}key=${LOCATION_KEY}`, {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+      });
+
+    const data = await response.json();
+    const lat = data.location.lat;
+    const lng = data.location.lng;
+
+    console.log(lat, lng);
+  } 
+  catch (error) {
+    console.error(error);
   }
 }
 
