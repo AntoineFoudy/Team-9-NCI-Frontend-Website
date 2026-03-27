@@ -77,7 +77,7 @@
         const encodeAddress = encodeURIComponent(formatAddress).replace(/%20/g, '+');
 
         // Store selected address globally for addEvent()
-        window.selectedLocation = place.formattedAddress;
+        window.selectedAddress = encodeAddress;
 
         // Move map
         if (place.viewport) {
