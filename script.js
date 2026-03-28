@@ -372,3 +372,62 @@ async function viewCalendar() {
     calendar.innerHTML = "<p>Failed to load calendar</p>";
   }
 }
+
+async function loadUpcomingEvents() {
+const container = document.getElementById("upcomingEvents");
+const details = document.getElementById("eventDetails");
+
+if (!container || !details) return;
+
+try {
+const res = await fetch(`${API_URL}/schedule?userId=${localStorage.getItem("userId")}`);
+const events = await res.json();
+
+const now = new Date();
+
+const upcoming = events
+.filter(e => new Date(e.dateTime) > now)
+.slice(0, 2);
+
+container.innerHTML = "";
+
+upcoming.forEach(event => {
+const date = new Date(event.dateTime);
+
+const div = document.createElement("div");
+div.className = "event";
+
+div.innerHTML = `
+<p><strong>${date.toLocaleDateString()}</strong></p>
+<p>${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+<p>${event.location || event.address}</p>
+`;
+
+div.onclick = () => {
+details.innerHTML = `
+<p><strong>Date:</strong> ${date.toLocaleDateString()}</p>
+<p><strong>Time:</strong> ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+<p><strong>${event.description || ""}</strong></p>
+
+<iframe
+width="100%"
+height="280"
+style="border:0; margin-top:10px;"
+src="https://www.google.com/maps?q=${encodeURIComponent(event.location || event.address)}&output=embed">
+</iframe>
+`;
+};
+
+container.appendChild(div);
+});
+
+} catch (err) {
+console.error(err);
+container.innerHTML = "<p>Error loading events</p>";
+}
+}
+
+if (window.location.pathname.includes("dashboard.html")) {
+showUserDetails();
+loadUpcomingEvents();
+}
