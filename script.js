@@ -3,6 +3,7 @@
 
 
 const API_URL = "http://108.131.153.250:8080";
+// const API_URL = "http://localhost:8080";
 const API_LOCATION_URL = "https://www.googleapis.com/geolocation/v1/geolocate?";
 const LOCATION_KEY = "AIzaSyA7y6tiN4jCAqErJwRX9snh79AATgU7e8k";
 
@@ -255,7 +256,7 @@ async function getEvents() {
        height="200"
        style="border:0; margin-top:10px;"
        loading="lazy"
-       src="https://www.google.com/maps?q=${encodeURIComponent(event.location)}&output=embed">
+       src="https://www.google.com/maps?q=${encodeURIComponent(event.address)}&output=embed">
        </iframe>
       `;
 
