@@ -215,6 +215,7 @@ async function getEvents() {
   if (selectedDateEvents) selectedDateEvents.innerHTML = "";
 
   try {
+
     // Fetch events from backend
     const response = await fetch(`${API_URL}/schedule?userId=${userId}`);
     const events = await response.json();
@@ -427,7 +428,45 @@ container.innerHTML = "<p>Error loading events</p>";
 }
 }
 
+//Load attendance 
+async function loadAttendance() {
+  try {
+    const userId = localStorage.getItem("userId");
+
+    const res = await fetch(`${API_URL}/tardiness?userId=${userId}`);
+    const data = await res.json();
+
+    document.getElementById("latesCount").innerText = data.lates ?? 0;
+    document.getElementById("onTimesCount").innerText = data.onTimes ?? 0;
+
+  } catch (error) {
+    console.error("Error loading attendance:", error);
+    document.getElementById("latesCount").innerText = "0";
+    document.getElementById("onTimesCount").innerText = "0";
+  }
+}
+
+//load most visited locations 
+async function loadMostVisitedLocation() {
+  try {
+    const userId = localStorage.getItem("userId");
+
+    const res = await fetch(`${API_URL}/location?userId=${userId}`);
+    const data = await res.json();
+
+    document.getElementById("mostVisitedLocation").innerText =
+      data.location || "No locations Available";
+
+  } catch (error) {
+    console.error("Error loading location:", error);
+    document.getElementById("mostVisitedLocation").innerText = "Error";
+  }
+}
+
+//run function on startup. 
 if (window.location.pathname.includes("dashboard.html")) {
 showUserDetails();
 loadUpcomingEvents();
+loadAttendance();
+loadMostVisitedLocation();
 }
