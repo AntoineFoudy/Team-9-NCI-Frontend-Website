@@ -205,6 +205,7 @@ async function getEvents() {
   const userId = localStorage.getItem("userId");
   const container = document.getElementById("events");
   const calendar = document.getElementById("calendar");
+  const description = document.getElementById("description");
   const selectedDateEvents = document.getElementById("selected-date-events");
 
   if (!container) return;
@@ -228,12 +229,19 @@ async function getEvents() {
 
     // Render each event as a card
     events.forEach(event => {
+
+      const status = new Date(event.dateTime) > new Date() 
+      ? '<span style = "color: green;">Upcoming</span>'
+      : '<span style = "color: red;">Completed</span>';
+
       const div = document.createElement("div");
       div.className = "event";
 
       div.innerHTML = `
         <p><b>Date:</b> ${event.dateTime}</p>
+        <p><b>Description:</b> ${event.description}</p>
         <p><b>address:</b> ${event.address || "Not available"}</p>
+        <p><b>status:</b> ${status }</p>
 
         <iframe
         width="100%"
