@@ -23,8 +23,8 @@ if(document.getElementById("submit")) {
    if correct redirects user to dahsboard page
 ========================================= */
 async function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const loginEmail = document.getElementById("email").value;
+  const loginPassword = document.getElementById("password").value;
   const errorEl = document.getElementById("error");
 
 
@@ -35,10 +35,17 @@ async function login() {
 
   try {
     // Send login request to backend
-    const response = await fetch(
-      `${API_URL}/login?loginEmail=${encodeURIComponent(email)}&loginPassword=${encodeURIComponent(password)}`,
-      {method: "GET"}
-    );
+    const response = await fetch(`${API_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      loginEmail,
+      loginPassword
+    })
+  });
+
 
     const data = await response.json();
    //  console.log(data);
