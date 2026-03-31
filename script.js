@@ -205,6 +205,31 @@ async function addEvent() {
   }
 }
 
+//DELETE EVENT 
+async function deleteEvent(scheduleId) {
+  if (!confirm("Are you sure you want to delete this event?")) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/scheduleId?scheduleId=${scheduleId}`, {
+      method: "DELETE"
+    });
+    if (res.ok) {
+      alert("Event deleted successfully");
+
+      // auto reload events
+      loadEvents(); 
+    } else {
+      alert("Failed to delete event");
+    }
+    //ERROR HANDLING
+  } catch (error) {
+  
+    alert("Error deleting event");
+  }
+}
+
 
   // GET EVENTS 
   // Fetches all events for the current user 
@@ -229,6 +254,8 @@ async function getEvents() {
     const response = await fetch(`${API_URL}/schedule?userId=${userId}`);
     const events = await response.json();
 
+    events.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+
     // If no events exist
     if (!events.length) {
       container.innerHTML = "<p>No events found.</p>";
@@ -250,6 +277,8 @@ async function getEvents() {
         <p><b>Description:</b> ${event.description}</p>
         <p><b>address:</b> ${event.address || "Not available"}</p>
         <p><b>status:</b> ${status }</p>
+        <button onclick="deleteEvent(${event.scheduleId})">Delete</button>
+
 
         <iframe
         width="100%"
@@ -415,16 +444,17 @@ const div = document.createElement("div");
 div.className = "event";
 
 div.innerHTML = `
-<p><strong>${date.toLocaleDateString()}</strong></p>
-<p>${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
-<p>${event.location || event.address}</p>
+<p><strong>Date:</strong> ${date.toLocaleDateString()}</p>
+<p><strong>Time:</strong> ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+<p><strong>Location:</strong> ${event.location || event.address}</p>
+<p><strong>Description:</strong> ${event.description || "No description"}</p>
 `;
 
 div.onclick = () => {
 details.innerHTML = `
 <p><strong>Date:</strong> ${date.toLocaleDateString()}</p>
 <p><strong>Time:</strong> ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
-<p><strong>${event.description || ""}</strong></p>
+<p><strong>Description:</strong> ${event.description || "No description"}</p>
 
 <iframe
 width="100%"
@@ -456,7 +486,7 @@ async function loadAttendance() {
     document.getElementById("onTimesCount").innerText = data.onTimes ?? 0;
 
   } catch (error) {
-    console.error("Error loading attendance:", error);
+    
     document.getElementById("latesCount").innerText = "0";
     document.getElementById("onTimesCount").innerText = "0";
   }
