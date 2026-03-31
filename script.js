@@ -212,7 +212,7 @@ async function deleteEvent(scheduleId) {
   }
 
   try {
-    const res = await fetch(`${API_URL}/scheduleId?scheduleId=${scheduleId}`, {
+    const res = await fetch(`${API_URL}/schedule?scheduleId=${scheduleId}`, {
       method: "DELETE"
     });
     if (res.ok) {
