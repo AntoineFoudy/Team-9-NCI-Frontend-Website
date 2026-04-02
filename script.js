@@ -1,15 +1,9 @@
 // API BASE URL
-<<<<<<< HEAD
-
-
 
 const API_URL = "http://52.16.133.37:8080";
-=======
-const API_URL = "http://108.131.153.250:8080";
->>>>>>> ab526a2 (fix minor errors)
-// const API_URL = "http://localhost:8080";
 const API_LOCATION_URL = "https://www.googleapis.com/geolocation/v1/geolocate?";
 const LOCATION_KEY = "AIzaSyA7y6tiN4jCAqErJwRX9snh79AATgU7e8k";
+
 
 // declaring variable submit
 let submit;
@@ -423,7 +417,7 @@ async function viewCalendar() {
   }
 }
 
-//load upcomin events
+//load upcominG events
 async function loadUpcomingEvents() {
 const container = document.getElementById("upcomingEvents");
 const details = document.getElementById("eventDetails");
@@ -521,6 +515,9 @@ loadUpcomingEvents();
 loadAttendance();
 loadMostVisitedLocation();
 }
+
+
+//SIGN UP
 document.getElementById("signupBtn").addEventListener("click", function () {
 
     const firstName = document.getElementById("firstName").value;
