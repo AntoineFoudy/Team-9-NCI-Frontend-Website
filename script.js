@@ -49,6 +49,7 @@ async function login() {
     const data = await response.json();
    //  console.log(data);
 
+   if(data.userID != 0) {
     // Assign userID
     const userId = data.userID;
 
@@ -61,6 +62,12 @@ async function login() {
 
     // Redirect user to dashboard after login
     window.location.href = "dashboard.html";
+   }
+   else {
+    // Alert user a field has incorrect info
+    alert("Email or Password incorrect");
+   }
+    
   } catch (error) {
     console.error(error);
 
