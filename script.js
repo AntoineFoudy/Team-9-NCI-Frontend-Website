@@ -1,8 +1,12 @@
 // API BASE URL
+<<<<<<< HEAD
 
 
 
 const API_URL = "http://52.16.133.37:8080";
+=======
+const API_URL = "http://108.131.153.250:8080";
+>>>>>>> ab526a2 (fix minor errors)
 // const API_URL = "http://localhost:8080";
 const API_LOCATION_URL = "https://www.googleapis.com/geolocation/v1/geolocate?";
 const LOCATION_KEY = "AIzaSyA7y6tiN4jCAqErJwRX9snh79AATgU7e8k";
@@ -219,7 +223,7 @@ async function deleteEvent(scheduleId) {
       alert("Event deleted successfully");
 
       // auto reload events
-      loadEvents(); 
+      getEvents(); 
     } else {
       alert("Failed to delete event");
     }
@@ -419,6 +423,7 @@ async function viewCalendar() {
   }
 }
 
+//load upcomin events
 async function loadUpcomingEvents() {
 const container = document.getElementById("upcomingEvents");
 const details = document.getElementById("eventDetails");
@@ -482,8 +487,8 @@ async function loadAttendance() {
     const res = await fetch(`${API_URL}/tardiness?userId=${userId}`);
     const data = await res.json();
 
-    document.getElementById("latesCount").innerText = data.lates ?? 0;
-    document.getElementById("onTimesCount").innerText = data.onTimes ?? 0;
+    document.getElementById("latesCount").innerText = data[0] ?? 0;
+    document.getElementById("onTimesCount").innerText = data[1] ?? 0;
 
   } catch (error) {
     
@@ -501,7 +506,7 @@ async function loadMostVisitedLocation() {
     const data = await res.json();
 
     document.getElementById("mostVisitedLocation").innerText =
-      data.location || "No locations Available";
+      data[0] || "No locations Available";
 
   } catch (error) {
     console.error("Error loading location:", error);
