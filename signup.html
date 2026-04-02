@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="Login.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <!-- Icon -->
+        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" width="80">
+
+        <h2>Sign Up</h2>
+
+        <!-- Success message -->
+        <p id="success" style="color:lightgreen; display:none;">
+            Account created successfully!
+        </p>
+
+        <!-- Error message -->
+        <p id="error" style="color:red; display:none;">
+            Signup failed
+        </p>
+
+        <!-- Inputs -->
+        <input id="firstName" placeholder="First Name" required>
+
+        <input id="lastName" placeholder="Last Name" required>
+
+        <input id="email" type="email" placeholder="Email" required>
+
+        <input id="password" type="password" placeholder="Password" required>
+
+        <!-- Sign up button -->
+        <button id="signupBtn" type="button">Sign Up</button>
+
+        <br><br>
+
+        <!-- Back to login -->
+        <button onclick="window.location.href='Login.html'">
+            Back to Login
+        </button>
+
+    </div>
+
+    <!-- JS -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>

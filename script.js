@@ -516,3 +516,48 @@ loadUpcomingEvents();
 loadAttendance();
 loadMostVisitedLocation();
 }
+document.getElementById("signupBtn").addEventListener("click", function () {
+
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    fetch("http://52.16.133.37:8080/signup", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password
+        })
+    })
+    .then(response => {
+        console.log("Status:", response.status);
+
+        if (response.status === 200 || response.status === 201) {
+            // SUCCESS
+            document.getElementById("success").style.display = "block";
+            document.getElementById("error").style.display = "none";
+
+            // optional: redirect after 2 seconds
+            setTimeout(() => {
+                window.location.href = "Login.html";
+            }, 2000);
+
+        } else {
+            // FAIL
+            document.getElementById("error").style.display = "block";
+            document.getElementById("success").style.display = "none";
+        }
+    })
+    .catch(error => {
+        console.log(error);
+        document.getElementById("error").style.display = "block";
+        document.getElementById("success").style.display = "none";
+    });
+
+});
