@@ -1,6 +1,7 @@
 // API BASE URL
 
-const API_URL = "http://52.16.133.37:8080";
+// const API_URL = "http://52.16.133.37:8080";
+const API_URL = "http://localhost:8080";
 const API_LOCATION_URL = "https://www.googleapis.com/geolocation/v1/geolocate?";
 const LOCATION_KEY = "AIzaSyA7y6tiN4jCAqErJwRX9snh79AATgU7e8k";
 
@@ -152,7 +153,7 @@ function goToViewEvents() {
 function logout() {
   localStorage.removeItem("userId");
   localStorage.removeItem("userEmail");
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
   // CREATE EVENT 
@@ -554,7 +555,7 @@ document.getElementById("signupBtn").addEventListener("click", function () {
 
             // optional: redirect after 2 seconds
             setTimeout(() => {
-                window.location.href = "Login.html";
+                window.location.href = "index.html";
             }, 2000);
 
         } else {
