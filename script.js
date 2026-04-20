@@ -516,6 +516,8 @@ loadUpcomingEvents();
 loadAttendance();
 loadMostVisitedLocation();
 }
+
+//sign up
 document.getElementById("signupBtn").addEventListener("click", function () {
 
     const firstName = document.getElementById("firstName").value;
