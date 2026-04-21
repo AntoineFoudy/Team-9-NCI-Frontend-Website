@@ -1,0 +1,23 @@
+{
+  "name": "team-9-nci-frontend-website",
+  "version": "1.0.0",
+  "description": "Front End Development MyLocation Tracker",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AntoineFoudy/Team-9-NCI-Frontend-Website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AntoineFoudy/Team-9-NCI-Frontend-Website/issues"
+  },
+  "homepage": "https://github.com/AntoineFoudy/Team-9-NCI-Frontend-Website#readme",
+  "dependencies": {
+    "jest": "^30.3.0"
+  }
+}
